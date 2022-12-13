@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "529851904967",
+    "project_id": "railbd114",
+    "storage_bucket": "railbd114.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529851904967:android:3461326a2a4215d9505fe2",
+        "android_client_info": {
+          "package_name": "com.example.railbd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "529851904967-2cmcbso1r13d2j4bn02dgef9ssudapit.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIGMPnKY0AkIkld9ZbSQsPVuo2XoNIc5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "529851904967-2cmcbso1r13d2j4bn02dgef9ssudapit.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

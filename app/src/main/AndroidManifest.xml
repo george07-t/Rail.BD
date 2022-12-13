@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.railbd">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.RailBD"
+        tools:targetApi="31">
+        <activity
+            android:name=".MakePayment"
+            android:exported="false" />
+        <activity
+            android:name=".GoForPayment"
+            android:exported="false" />
+        <activity
+            android:name=".StationNumber"
+            android:exported="false" />
+        <activity
+            android:name=".TrainScheduleView"
+            android:exported="false"
+            android:label="Train Schedule" />
+        <activity
+            android:name=".TrainSeatPlan"
+            android:exported="false" />
+        <activity
+            android:name=".DeleteTrain"
+            android:exported="false" />
+        <activity
+            android:name=".ShowAvaiableTrain"
+            android:exported="false" />
+        <activity
+            android:name=".SearchTrain"
+            android:exported="false" />
+        <activity
+            android:name=".LoadTrainList"
+            android:exported="false"
+            android:label="Train List" />
+        <activity
+            android:name=".AddTrain"
+            android:exported="false"
+            android:label="Add Train" />
+        <activity
+            android:name=".AdminOptions"
+            android:exported="false"
+            android:label="Administration" />
+        <activity
+            android:name=".AdminPanelLogin"
+            android:exported="false"
+            android:label="Admin Log In" />
+        <activity
+            android:name=".AboutUs"
+            android:exported="false"
+            android:label="About Rail.BD" />
+        <activity
+            android:name=".FeedBackGet"
+            android:exported="false"
+            android:label="Feedback" />
+        <activity
+            android:name=".UserProfileShow"
+            android:exported="false"
+            android:label="User Profile" />
+        <activity
+            android:name=".UserResetPassword"
+            android:exported="false"
+            android:label="Reset Password" />
+        <activity
+            android:name=".UserSignUp"
+            android:exported="false"
+            android:label="User SignUp" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserLogin"
+            android:exported="false"
+            android:label="User LogIn" />
+        <activity
+            android:name=".SplashScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".Broadcaster"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
