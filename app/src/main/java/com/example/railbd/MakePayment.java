@@ -74,14 +74,24 @@ public class MakePayment extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
                             String ticketnum=databaseReference.push().getKey();
-                            userTicketDetails = new UserTicketDetails(togo, date, time, coach, seatnum, total, cardnumber, moblie, cardname,ticketnum);
+                            String ticketnumber=ticketnum.substring(13);
+                            userTicketDetails = new UserTicketDetails(togo, date, time, coach, seatnum, total, cardnumber, moblie, cardname,ticketnumber);
                             FirebaseDatabase.getInstance().getReference("userticket").child(ticketnum).child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(userTicketDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task1) {
                                             if (task1.isSuccessful()) {
+                                                FirebaseDatabase.getInstance().getReference("alltickets").child(ticketnum).setValue(userTicketDetails);
                                                 Toast.makeText(MakePayment.this, "Thank you for purchase", Toast.LENGTH_LONG).show();
-                                                Intent intent = new Intent(MakePayment.this, MainActivity.class);
+                                                Intent intent = new Intent(MakePayment.this, ShowTicketAfterPayment.class);
+                                                intent.putExtra("togo",togo);
+                                                intent.putExtra("time",time);
+                                                intent.putExtra("date",date);
+                                                intent.putExtra("coach",coach);
+                                                intent.putExtra("total",total);
+                                                intent.putExtra("seats",seats);
+                                                intent.putExtra("seatsnum",seatnum);
+                                                intent.putExtra("ticketnum",ticketnumber);
                                                 startActivity(intent);
 
                                                 finish();

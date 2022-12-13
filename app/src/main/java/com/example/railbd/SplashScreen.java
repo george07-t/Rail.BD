@@ -40,9 +40,9 @@ private FirebaseAuth mAuth;
     }
     public void dowork()
     {
-        for(progress=10;progress<=101;progress=progress+50) {
+        for(progress=10;progress<=101;progress=progress+5) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
                 sp1.setProgress(progress);
             } catch (InterruptedException e) {
                 e.printStackTrace();

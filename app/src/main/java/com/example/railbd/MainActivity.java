@@ -30,6 +30,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private BroadcastReceiver broadcastReceiver1;
@@ -44,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String userid;
     private TextView usershowinnavigation;
     private CardView buyTicket, verifyticket, tickethistory, ticketprice, trainshedule, stationnumber;
+    SliderView sliderView;
+    int[] images = {R.drawable.rail1,
+            R.drawable.rail5,
+            R.drawable.rail4,
+            R.drawable.rail6,
+            R.drawable.rail3,
+            R.drawable.rail2};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tickethistory = findViewById(R.id.tickethistory);
         ticketprice = findViewById(R.id.ticketprice);
         trainshedule = findViewById(R.id.trainshedule);
+        sliderView = findViewById(R.id.image_slider);
+
+        SliderAdapter sliderAdapter = new SliderAdapter(images);
+
+        sliderView.setSliderAdapter(sliderAdapter);
+        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+        sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
+        sliderView.startAutoCycle();
         // Navagation Drawar------------------------------
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
@@ -189,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alart = new AlertDialog.Builder(MainActivity.this);
-        alart.setTitle("ALART");
+        alart.setTitle("ALERT");
         alart.setMessage("Are you sure exit?");
         alart.setIcon(R.drawable.interrogation);
         alart.setPositiveButton("yes", new DialogInterface.OnClickListener() {

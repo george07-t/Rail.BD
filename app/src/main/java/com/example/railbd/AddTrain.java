@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -41,6 +42,8 @@ public class AddTrain extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.admin));
 ////////////////////
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         from = findViewById(R.id.fromid);
         to = findViewById(R.id.toid);
         time = findViewById(R.id.timeid);
@@ -86,7 +89,7 @@ public class AddTrain extends AppCompatActivity {
             databaseReference.orderByChild("total").equalTo(total).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
+                    if (snapshot.exists()) {
                         //bus number exists in Database
                         Toast.makeText(getApplicationContext(), "Train Already Exist in This Time", Toast.LENGTH_SHORT).show();
                         time.setError("Train Already Exist in This Time");
@@ -107,5 +110,14 @@ public class AddTrain extends AppCompatActivity {
             });
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Rail.BD</string>
+    <string name="your_string_here"><![CDATA[This is an <u>JOURNEY DETAILS</u>.]]></string>
     <string name="open"></string>
     <string name="close"></string>
     <string-array name="Train_Location">

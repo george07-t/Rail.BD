@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="10dp"
+            android:popupBackground="@drawable/rounded_shape1"
             android:background="@drawable/rounded_shape1" />
         <TextView
             android:layout_width="wrap_content"
@@ -41,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="10dp"
+            android:popupBackground="@drawable/rounded_shape1"
             android:background="@drawable/rounded_shape1" />
         <TextView
             android:layout_width="wrap_content"
