@@ -93,6 +93,8 @@ public class AdminOptions extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent1);
                 break;
             case R.id.see_ticket:
+                Intent intent3 = new Intent(AdminOptions.this, AdminSeeAllTickets.class);
+                startActivity(intent3);
                 Toast.makeText(getApplicationContext(), "See Ticket", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.trainlist:

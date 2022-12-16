@@ -1,44 +1,43 @@
 package com.example.railbd;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultCaller;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.provider.Settings;
-import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,90 +45,61 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
-public class ShowTicketAfterPayment extends AppCompatActivity {
-    private TextView togo1, date1, time1, coach1, seatnum1, seats1, price1, ticknum1, username, numbers;
-    String ticketnum, togo, date, time, coach, seatnum, totalid, seats;
+public class VerifyTickets extends AppCompatActivity {
+    private EditText ticketid;
+    private Button verifyid;
+    private TextView togo1, date1, time1, coach1, seatnum1, price1, ticknum1,sorry;
     private Button down, ok;
-    private FirebaseUser user;
-    private DatabaseReference databaseReference;
-    private String userid;
-     private String sms,name, fullname, pnumber;
+    LinearLayout l1;
+    String ticketnum, togo, date, time, coach, seatnum, totalid;
+    String tickerid, key, getTickerid;
+    DatabaseReference databaseReference;
+    UserTicketDetails userTicketDetails;
     private static final int STORAGE_PERMISSION_CODE = 100;
     private static final String TAG = "PERMISSION_TAG";
     Bitmap bmp, scaledbmp;
+    int n=10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_ticket_after_payment);
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("userprofile");
-        userid = user.getUid();
-        seats = getIntent().getStringExtra("seats");
-        togo = getIntent().getStringExtra("togo");
-        time = getIntent().getStringExtra("time");
-        date = getIntent().getStringExtra("date");
-        coach = getIntent().getStringExtra("coach");
-        totalid = getIntent().getStringExtra("total");
-        seatnum = getIntent().getStringExtra("seatsnum");
-        ticketnum = getIntent().getStringExtra("ticketnum");
-        username = findViewById(R.id.username);
-        numbers = findViewById(R.id.numbers);
-        databaseReference.child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserProfile userProfile = snapshot.getValue(UserProfile.class);
-                if (userProfile != null) {
-                    fullname = userProfile.name;
-                    pnumber = userProfile.number;
-                    username.setText(fullname);
-                    numbers.setText(pnumber);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ShowTicketAfterPayment.this, "Something Happen ", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        setContentView(R.layout.activity_verify_tickets);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        l1 = findViewById(R.id.showinovice);
+        ticketid = findViewById(R.id.verifyticket);
+        verifyid = findViewById(R.id.verifyid);
         togo1 = findViewById(R.id.togo1);
         date1 = findViewById(R.id.date1);
         time1 = findViewById(R.id.time1);
         coach1 = findViewById(R.id.coach1);
         seatnum1 = findViewById(R.id.seatnum1);
-        seats1 = findViewById(R.id.seats1);
         price1 = findViewById(R.id.price1);
-        ticknum1 = findViewById(R.id.ticknum);
-        ticknum1.setText(ticketnum);
-        date1.setText(date);
-        time1.setText(time);
-        coach1.setText(coach);
-        seatnum1.setText(seatnum);
-        seats1.setText(seats);
-        price1.setText(totalid);
         down = findViewById(R.id.down);
         ok = findViewById(R.id.ok);
-        togo1.setText(togo);
-        sms = "Passenger:" +name + "\nLocation:" + togo + "\n Date & Time:" + date + "/" + time + "\nCoach Seats:" + coach + "-" + seatnum + "\nFare:" + totalid;
+        sorry=findViewById(R.id.sorry);
+        ticknum1 = findViewById(R.id.ticknum);
+        databaseReference = FirebaseDatabase.getInstance().getReference("alltickets");
+        key = databaseReference.push().getKey();
+        verifyid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showticketinfo();
+            }
+        });
         down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(ShowTicketAfterPayment.this, "created", Toast.LENGTH_SHORT).show();
-                if(checkPermission()){
-                    Log.d(TAG,"onClick: Permission granted");
+                if (checkPermission()) {
+                    Log.d(TAG, "onClick: Permission granted");
                     createfolder();
-                }
-                else{
-                    Log.d(TAG,"onClick: Permission denied");
+                } else {
+                    Log.d(TAG, "onClick: Permission denied");
                     requestpermission();
                 }
             }
@@ -137,11 +107,66 @@ public class ShowTicketAfterPayment extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShowTicketAfterPayment.this, MainActivity.class);
+                Intent intent = new Intent(VerifyTickets.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
+    }
+
+    private void showticketinfo() {
+        sorry.setVisibility(View.INVISIBLE);
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Searching Ticket");
+        progressDialog.setMessage("Fetching data...");
+        progressDialog.show();
+        tickerid = ticketid.getText().toString().trim();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    userTicketDetails = snapshot1.getValue(UserTicketDetails.class);
+                    if (userTicketDetails.getTicketnum().equals(tickerid)) {
+                        getTickerid = userTicketDetails.getTicketnum();
+                        ticknum1.setText(userTicketDetails.getTicketnum());
+                        togo1.setText(userTicketDetails.getTogo());
+                        date1.setText(userTicketDetails.getDate());
+                        time1.setText(userTicketDetails.getTime());
+                        coach1.setText(userTicketDetails.getCoach());
+                        seatnum1.setText(userTicketDetails.getSeats());
+                        price1.setText(userTicketDetails.getCost());
+                        togo = userTicketDetails.getTogo();
+                        date = userTicketDetails.getDate();
+                        time = userTicketDetails.getTime();
+                        coach = userTicketDetails.getCoach();
+                        seatnum = userTicketDetails.getSeats();
+                        totalid = userTicketDetails.getCost();
+                        progressDialog.dismiss();
+                        n++;
+                        l1.setVisibility(View.VISIBLE);
+                        break;
+                    } else if (getTickerid != tickerid) {
+                        progressDialog.dismiss();
+                       // n--;
+
+                    }
+
+                }
+                if(n<=10){
+                    sorry.setVisibility(View.VISIBLE);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+
+
     }
 
 
@@ -171,36 +196,35 @@ public class ShowTicketAfterPayment extends AppCompatActivity {
 
         paint.setColor(ContextCompat.getColor(this, R.color.main2_color));
         canvas.drawLine(10, 100, 290, 100, paint);
-
         paint.setColor(Color.BLACK);
         paint.setTextSize(15);
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("Ticket Number:"+ticketnum, 50, 130, paint);
-        canvas.drawText("Location:"+togo, 50, 170, paint);
-        canvas.drawText("Date:"+date, 50, 210, paint);
-        canvas.drawText("Time:"+time, 50, 250, paint);
-        canvas.drawText("Coach:"+coach, 50, 290, paint);
-        canvas.drawText("Seats:"+seatnum, 50, 330, paint);
-        canvas.drawText("Total Seats:"+seats, 50, 370, paint);
-        canvas.drawText("FARE:"+totalid, 50, 410, paint);
-        canvas.drawText("Name:"+fullname, 50, 450, paint);
+        canvas.drawText("Ticket Number:" + getTickerid, 50, 130, paint);
+        canvas.drawText("Location:" + togo, 50, 170, paint);
+        canvas.drawText("Date:" + date, 50, 210, paint);
+        canvas.drawText("Time:" + time, 50, 250, paint);
+        canvas.drawText("Coach:" + coach, 50, 290, paint);
+        canvas.drawText("Seats:" + seatnum, 50, 330, paint);
+
+        canvas.drawText("FARE:" + totalid, 50, 370, paint);
+        canvas.drawText("Bangladesh Railway", 50, 410, paint);
         //canvas.draw
         // finish the page
         document.finishPage(page);
-        String directory_path = Environment.getExternalStorageDirectory().getPath() + "/RAIL.BD/";
+        String directory_path = Environment.getExternalStorageDirectory().getPath() + "/Rai.BD/";
         File file = new File(directory_path);
         if (!file.exists()) {
             file.mkdirs();
         }
-        String targetPdf = directory_path+"Rail.BD"+System.currentTimeMillis()+".pdf";
+        String targetPdf = directory_path + "Rail.BD" + System.currentTimeMillis() + ".pdf";
         File filePath = new File(targetPdf);
         try {
             document.writeTo(new FileOutputStream(filePath));
             Toast.makeText(this, "Done", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
-            Log.e("main", "error "+e.toString());
-            Toast.makeText(this, "Something wrong: " + e.toString(),  Toast.LENGTH_LONG).show();
+            Log.e("main", "error " + e.toString());
+            Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
         }
         // close the document
         document.close();
@@ -238,7 +262,7 @@ public class ShowTicketAfterPayment extends AppCompatActivity {
                             createfolder();
                         } else {
                             Log.d(TAG, "onActivityResult: Manage External Storage Permission is granted");
-                            Toast.makeText(ShowTicketAfterPayment.this, "External Storage Permission is granted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VerifyTickets.this, "External Storage Permission is granted", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -264,19 +288,26 @@ public class ShowTicketAfterPayment extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==STORAGE_PERMISSION_CODE){
-            if(grantResults.length>0){
-                boolean write=grantResults[0]==PackageManager.PERMISSION_GRANTED;
-                boolean read=grantResults[1]==PackageManager.PERMISSION_GRANTED;
-                if(write && read){
-                    Log.d(TAG,"onRequestPermissionsResult: External Storage Permission is granted");
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0) {
+                boolean write = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean read = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                if (write && read) {
+                    Log.d(TAG, "onRequestPermissionsResult: External Storage Permission is granted");
                     createfolder();
-                }
-                else {
-                    Log.d(TAG,"onRequestPermissionsResult: External Storage Permission is denied");
+                } else {
+                    Log.d(TAG, "onRequestPermissionsResult: External Storage Permission is denied");
                     Toast.makeText(this, "External Storage Permission is denied", Toast.LENGTH_SHORT).show();
                 }
             }
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

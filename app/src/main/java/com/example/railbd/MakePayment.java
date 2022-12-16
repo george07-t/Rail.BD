@@ -74,9 +74,9 @@ public class MakePayment extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
                             String ticketnum=databaseReference.push().getKey();
-                            String ticketnumber=ticketnum.substring(13);
+                            String ticketnumber="RB-"+ticketnum.substring(15);
                             userTicketDetails = new UserTicketDetails(togo, date, time, coach, seatnum, total, cardnumber, moblie, cardname,ticketnumber);
-                            FirebaseDatabase.getInstance().getReference("userticket").child(ticketnum).child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            FirebaseDatabase.getInstance().getReference("userticket").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(ticketnum)
                                     .setValue(userTicketDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task1) {

@@ -270,8 +270,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view.getId() == R.id.verifyticket) {
             if (firebaseUser != null) {
-                //user log in
-                Toast.makeText(getApplicationContext(), "Clicked2", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(MainActivity.this,VerifyTickets.class);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Verify", Toast.LENGTH_SHORT).show();
             } else {
                 dialog();
             }
@@ -279,8 +280,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view.getId() == R.id.tickethistory) {
             if (firebaseUser != null) {
-                //user log in
-                Toast.makeText(getApplicationContext(), "Clicked3", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this,UserTicketBookingHistory.class));
+                Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
             } else {
                 dialog();
             }
@@ -288,8 +289,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view.getId() == R.id.ticketprice) {
             if (firebaseUser != null) {
-                //user log in
-                Toast.makeText(getApplicationContext(), "Clicked4", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this,TicketPrice.class));
+                Toast.makeText(getApplicationContext(), "Price", Toast.LENGTH_SHORT).show();
             } else {
                 dialog();
             }
@@ -326,8 +327,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void dialog() {
         AlertDialog.Builder alart = new AlertDialog.Builder(MainActivity.this);
-        alart.setTitle("ALART");
-        alart.setMessage("For Continue ,You Need to Log In.");
+        alart.setTitle("ALERT");
+        alart.setMessage("To Continue ,You Need to Log In.");
         alart.setIcon(R.drawable.interrogation);
         alart.setPositiveButton("Login", new DialogInterface.OnClickListener() {
             @Override

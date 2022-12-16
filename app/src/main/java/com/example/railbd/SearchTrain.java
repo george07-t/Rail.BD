@@ -74,6 +74,7 @@ public class SearchTrain extends AppCompatActivity {
         String trainlocation = sfromloc + "-" + stoloc;
         String coachplan = coachselect.getSelectedItem().toString().trim();
         String total = sfromloc + stoloc + getdate;
+
         if (getdate.isEmpty()) {
             sdate.setError("Enter Time");
             sdate.requestFocus();
@@ -112,6 +113,7 @@ public class SearchTrain extends AppCompatActivity {
                 getdate = date;
             }
         };
+
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
@@ -120,6 +122,7 @@ public class SearchTrain extends AppCompatActivity {
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
     }
 
     private String makeDateString(int day, int month, int year) {

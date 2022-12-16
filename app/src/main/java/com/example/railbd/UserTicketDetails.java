@@ -16,6 +16,9 @@ public class UserTicketDetails {
         this.ticketnum=ticketnum;
     }
 
+    public UserTicketDetails() {
+    }
+
     public String getTicketnum() {
         return ticketnum;
     }

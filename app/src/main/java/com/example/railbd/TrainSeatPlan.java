@@ -1,5 +1,6 @@
 package com.example.railbd;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -17,14 +18,17 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TrainSeatPlan extends AppCompatActivity {
-    String togo, time, date, total, coachplan;
+    String togo, time, date, total, coachplan, check;
     private TextView showtrain, seats;
     GridLayout mainGrid;
     Double seatPrice = 500.00;
@@ -36,9 +40,9 @@ public class TrainSeatPlan extends AppCompatActivity {
     int arr[];
     List<Integer> list = new ArrayList<>();
     String listString;
-    private FirebaseAuth firebaseAuth;
-    private ProgressDialog progressDialog;
     private DatabaseReference databaseReference;
+    UserTicketDetails userTicketDetails;
+    ArrayList<Integer> clist = new ArrayList<Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +50,19 @@ public class TrainSeatPlan extends AppCompatActivity {
         setContentView(R.layout.activity_train_seat_plan);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        firebaseAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
+        databaseReference = FirebaseDatabase.getInstance().getReference("alltickets");
+        check = databaseReference.push().getKey();
+/*ProgressDialog progressDialog=new ProgressDialog(this);
+progressDialog.setTitle("Loading available seats");
+progressDialog.setMessage("Please Wait..");
+progressDialog.show();*/
         mainGrid = (GridLayout) findViewById(R.id.mainGrid);
         totalBookedSeats = (TextView) findViewById(R.id.total_seats);
         totalPrice = (TextView) findViewById(R.id.total_cost);
         seats = findViewById(R.id.seats);
         buttonBook = (Button) findViewById(R.id.btnBook);
         showtrain = findViewById(R.id.showtrain);
-        setToggleEvent(mainGrid);
+
 
         showtrain.setVisibility(View.INVISIBLE);
         Bundle bundle = getIntent().getExtras();
@@ -69,32 +76,53 @@ public class TrainSeatPlan extends AppCompatActivity {
         }
         showtrain.setVisibility(View.VISIBLE);
         showtrain.setText(togo + "\n" + date + " ( " + time + " BST )\n" + coachplan);
+/*        databaseReference.child(check).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    UserTicketDetails userTicketDetails = snapshot1.getValue(UserTicketDetails.class);
+                    if (userTicketDetails.getTogo().equals(togo) && userTicketDetails.getDate().equals(date) &&
+                            userTicketDetails.getTime().equals(time)) {
+                        checklist="["+userTicketDetails.getTicketnum()+"]";
+                        progressDialog.dismiss();
+                    }
+                }
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });*/
+
+
+        setToggleEvent(mainGrid);
         buttonBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String totalPriceI = totalPrice.getText().toString().trim();
                 String totalBookedSeatsI = totalBookedSeats.getText().toString().trim();
+                if(totalBookedSeatsI.equals("0")){
+                    Toast.makeText(TrainSeatPlan.this, "No Seat is selected", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(TrainSeatPlan.this, GoForPayment.class);
+                    intent.putExtra("TOTALCOST", totalPriceI);
+                    intent.putExtra("TOTALSEAT", totalBookedSeatsI);
+                    intent.putExtra("togo", togo);
+                    intent.putExtra("time", time);
+                    intent.putExtra("date", date);
+                    intent.putExtra("coach", coachplan);
+                    intent.putExtra("total", total);
+                    intent.putExtra("seats", listString);
 
 
-/*                PaymentDetail paymentDetail=new PaymentDetail(totalPriceI,totalBookedSeatsI,togo,time,date,coachplan,total);
-
-                FirebaseUser user=firebaseAuth.getCurrentUser();
-                databaseReference.child(user.getUid()).child("SeatDetails").setValue(paymentDetail);*/
-
-                Intent intent = new Intent(TrainSeatPlan.this, GoForPayment.class);
-                intent.putExtra("TOTALCOST", totalPriceI);
-                intent.putExtra("TOTALSEAT", totalBookedSeatsI);
-                intent.putExtra("togo", togo);
-                intent.putExtra("time", time);
-                intent.putExtra("date", date);
-                intent.putExtra("coach", coachplan);
-                intent.putExtra("total", total);
-                intent.putExtra("seats",listString);
+                    startActivity(intent);
+                }
 
 
-                startActivity(intent);
 
             }
         });
@@ -116,8 +144,21 @@ public class TrainSeatPlan extends AppCompatActivity {
                         cardView.setCardBackgroundColor(Color.parseColor("#00d6a3"));
                         totatCost += seatPrice;
                         ++totalSeats;
+/*                        int idx = 0;
+                        for (idx=0;idx < clist.size();idx++) {
+                            if(clist.get(idx)==finalI+1){
+                                    Toast.makeText(TrainSeatPlan.this, "Booked", Toast.LENGTH_SHORT).show();
+
+                            }
+                            else
+                            {
+
+                                list.add(finalI + 1);
+                                break;
+                            }
+                        }*/
                         list.add(finalI + 1);
-                       // Toast.makeText(TrainSeatPlan.this, "You Selected Seat Number :" + (finalI + 1), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(TrainSeatPlan.this, "You Selected Seat Number :" + (finalI + 1), Toast.LENGTH_SHORT).show();
 
                     } else {
                         //Change background color
@@ -132,17 +173,10 @@ public class TrainSeatPlan extends AppCompatActivity {
                                 idx++;
                             }
                         }
-                       // Toast.makeText(TrainSeatPlan.this, "You Unselected Seat Number :" + (finalI + 1), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(TrainSeatPlan.this, "You Unselected Seat Number :" + (finalI + 1), Toast.LENGTH_SHORT).show();
                     }
                     totalPrice.setText("" + totatCost + "0");
                     totalBookedSeats.setText("" + totalSeats);
-/*                    for(int i=0;i<arr.length;i++)
-                    {
-                        if(arr[i]==0){
-                            continue;
-                        }
-                        list.add(arr[i]);
-                    }*/
                     listString = list.toString();
                     listString = listString.substring(1, listString.length() - 1);
                     seats.setText(listString);

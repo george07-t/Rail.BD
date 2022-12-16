@@ -5,8 +5,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,14 +17,27 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RailBD"
         tools:targetApi="31">
         <activity
+            android:name=".TicketPrice"
+            android:exported="false" />
+        <activity
+            android:name=".UserTicketBookingHistory"
+            android:exported="false" />
+        <activity
+            android:name=".AdminSeeAllTickets"
+            android:exported="false" />
+        <activity
+            android:name=".VerifyTickets"
+            android:exported="false" />
+        <activity
             android:name=".ShowTicketAfterPayment"
             android:exported="false"
-            android:label="Ticket Invoice"/>
+            android:label="Ticket Invoice" />
         <activity
             android:name=".MakePayment"
             android:exported="false" />
