@@ -24,45 +24,56 @@
         tools:targetApi="31">
         <activity
             android:name=".TicketPrice"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Ticket Price"/>
         <activity
             android:name=".UserTicketBookingHistory"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Ticket Booking History"/>
         <activity
             android:name=".AdminSeeAllTickets"
-            android:exported="false" />
+            android:exported="false"
+            android:label="All Tickets"/>
         <activity
             android:name=".VerifyTickets"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Ticket Verification"/>
         <activity
             android:name=".ShowTicketAfterPayment"
             android:exported="false"
             android:label="Ticket Invoice" />
         <activity
             android:name=".MakePayment"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Credit Card Payment"/>
         <activity
             android:name=".GoForPayment"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Select Payment Method"/>
         <activity
             android:name=".StationNumber"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Station Number"/>
         <activity
             android:name=".TrainScheduleView"
             android:exported="false"
             android:label="Train Schedule" />
         <activity
             android:name=".TrainSeatPlan"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Select Seats"/>
         <activity
             android:name=".DeleteTrain"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Admin Delete Train"/>
         <activity
             android:name=".ShowAvaiableTrain"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Available Train"/>
         <activity
             android:name=".SearchTrain"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Search Train"/>
         <activity
             android:name=".LoadTrainList"
             android:exported="false"

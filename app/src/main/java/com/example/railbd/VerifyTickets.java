@@ -212,7 +212,7 @@ public class VerifyTickets extends AppCompatActivity {
         //canvas.draw
         // finish the page
         document.finishPage(page);
-        String directory_path = Environment.getExternalStorageDirectory().getPath() + "/Rai.BD/";
+        String directory_path = Environment.getExternalStorageDirectory().getPath() + "/Rail.BD/";
         File file = new File(directory_path);
         if (!file.exists()) {
             file.mkdirs();
@@ -221,7 +221,7 @@ public class VerifyTickets extends AppCompatActivity {
         File filePath = new File(targetPdf);
         try {
             document.writeTo(new FileOutputStream(filePath));
-            Toast.makeText(this, "Done", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Done. Check in Rail.BD", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Log.e("main", "error " + e.toString());
             Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
