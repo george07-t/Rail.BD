@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (item.getItemId()) {
 
                     case R.id.mHome:
-                        Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "You Are in Home", Toast.LENGTH_SHORT).show();
                         drawerLayout.closeDrawers();
                         break;
 
