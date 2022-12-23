@@ -26,6 +26,7 @@ public class MakePayment extends AppCompatActivity {
     AlertDialog.Builder alertBuilder;
     UserTicketDetails userTicketDetails;
     DatabaseReference databaseReference;
+    String forcheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MakePayment extends AppCompatActivity {
         final String coach = getIntent().getStringExtra("coach");
         final String totalid = getIntent().getStringExtra("total");
         final String seatnum = getIntent().getStringExtra("seats");
+        forcheck=togo+date+time+coach;
         databaseReference = FirebaseDatabase.getInstance().getReference("userticket");
         t1.setText("From->To: " + togo + "\nJourney Date: " + date + "(" + time + "BST)\nCoach Name: " + coach + "\nSeat No: " + seatnum + "\nTotal Seats: " + seats + "\nFare: " + total + " TK(BDT)");
         buy = findViewById(R.id.btnBuy);
@@ -75,7 +77,7 @@ public class MakePayment extends AppCompatActivity {
                             dialogInterface.dismiss();
                             String ticketnum=databaseReference.push().getKey();
                             String ticketnumber="RB-"+ticketnum.substring(15);
-                            userTicketDetails = new UserTicketDetails(togo, date, time, coach, seatnum, total, cardnumber, moblie, cardname,ticketnumber);
+                            userTicketDetails = new UserTicketDetails(togo, date, time, coach, seatnum, total, cardnumber, moblie, cardname,ticketnumber,forcheck);
                             FirebaseDatabase.getInstance().getReference("userticket").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(ticketnum)
                                     .setValue(userTicketDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

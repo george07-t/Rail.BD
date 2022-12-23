@@ -1,9 +1,9 @@
 package com.example.railbd;
 
 public class UserTicketDetails {
-    String togo,date,time,coach,seats,cost,cardnumber,mobile,cardname,ticketnum;
+    String togo,date,time,coach,seats,cost,cardnumber,mobile,cardname,ticketnum,forcheck;
 
-    public UserTicketDetails(String togo, String date, String time, String coach, String seats, String cost,String cardnumber,String mobile,String cardname,String ticketnum) {
+    public UserTicketDetails(String togo, String date, String time, String coach, String seats, String cost,String cardnumber,String mobile,String cardname,String ticketnum,String forcheck) {
         this.togo = togo;
         this.date = date;
         this.time = time;
@@ -14,9 +14,18 @@ public class UserTicketDetails {
         this.mobile=mobile;
         this.cardname=cardname;
         this.ticketnum=ticketnum;
+        this.forcheck=forcheck;
     }
 
     public UserTicketDetails() {
+    }
+
+    public String getForcheck() {
+        return forcheck;
+    }
+
+    public void setForcheck(String forcheck) {
+        this.forcheck = forcheck;
     }
 
     public String getTicketnum() {

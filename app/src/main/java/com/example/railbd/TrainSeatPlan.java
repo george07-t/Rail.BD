@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TrainSeatPlan extends AppCompatActivity {
@@ -37,9 +39,8 @@ public class TrainSeatPlan extends AppCompatActivity {
     TextView totalPrice;
     TextView totalBookedSeats;
     private Button buttonBook;
-    int arr[];
     List<Integer> list = new ArrayList<>();
-    String listString;
+    String listString, totalseatsget;
     private DatabaseReference databaseReference;
     UserTicketDetails userTicketDetails;
     ArrayList<Integer> clist = new ArrayList<Integer>();
@@ -52,10 +53,6 @@ public class TrainSeatPlan extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         databaseReference = FirebaseDatabase.getInstance().getReference("alltickets");
         check = databaseReference.push().getKey();
-/*ProgressDialog progressDialog=new ProgressDialog(this);
-progressDialog.setTitle("Loading available seats");
-progressDialog.setMessage("Please Wait..");
-progressDialog.show();*/
         mainGrid = (GridLayout) findViewById(R.id.mainGrid);
         totalBookedSeats = (TextView) findViewById(R.id.total_seats);
         totalPrice = (TextView) findViewById(R.id.total_cost);
@@ -71,22 +68,27 @@ progressDialog.show();*/
             time = bundle.getString("timeshow");
             date = bundle.getString("date");
             coachplan = bundle.getString("coach");
-            total = togo + time + date + coachplan;
+            total = togo + date + time + coachplan;
 
         }
         showtrain.setVisibility(View.VISIBLE);
         showtrain.setText(togo + "\n" + date + " ( " + time + " BST )\n" + coachplan);
-/*        databaseReference.child(check).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    UserTicketDetails userTicketDetails = snapshot1.getValue(UserTicketDetails.class);
-                    if (userTicketDetails.getTogo().equals(togo) && userTicketDetails.getDate().equals(date) &&
-                            userTicketDetails.getTime().equals(time)) {
-                        checklist="["+userTicketDetails.getTicketnum()+"]";
-                        progressDialog.dismiss();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    UserTicketDetails userTicketDetails = dataSnapshot.getValue(UserTicketDetails.class);
+                    if (userTicketDetails.getForcheck().equals(total)) {
+                        totalseatsget = totalseatsget + "," + userTicketDetails.getSeats();
+                        Toast.makeText(TrainSeatPlan.this, "Added", Toast.LENGTH_SHORT).show();
+                        seats.setText(totalseatsget);
+
+                    } else {
+                        Toast.makeText(TrainSeatPlan.this, "Not Added", Toast.LENGTH_SHORT).show();
                     }
+
                 }
+
 
             }
 
@@ -94,7 +96,7 @@ progressDialog.show();*/
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });*/
+        });
 
 
         setToggleEvent(mainGrid);
@@ -104,10 +106,9 @@ progressDialog.show();*/
 
                 String totalPriceI = totalPrice.getText().toString().trim();
                 String totalBookedSeatsI = totalBookedSeats.getText().toString().trim();
-                if(totalBookedSeatsI.equals("0")){
+                if (totalBookedSeatsI.equals("0")) {
                     Toast.makeText(TrainSeatPlan.this, "No Seat is selected", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Intent intent = new Intent(TrainSeatPlan.this, GoForPayment.class);
                     intent.putExtra("TOTALCOST", totalPriceI);
                     intent.putExtra("TOTALSEAT", totalBookedSeatsI);
@@ -121,7 +122,6 @@ progressDialog.show();*/
 
                     startActivity(intent);
                 }
-
 
 
             }
@@ -141,23 +141,14 @@ progressDialog.show();*/
                 public void onClick(View view) {
                     if (cardView.getCardBackgroundColor().getDefaultColor() == -1) {
                         //Change background color
-                        cardView.setCardBackgroundColor(Color.parseColor("#00d6a3"));
-                        totatCost += seatPrice;
-                        ++totalSeats;
-/*                        int idx = 0;
-                        for (idx=0;idx < clist.size();idx++) {
-                            if(clist.get(idx)==finalI+1){
-                                    Toast.makeText(TrainSeatPlan.this, "Booked", Toast.LENGTH_SHORT).show();
-
-                            }
-                            else
-                            {
-
-                                list.add(finalI + 1);
-                                break;
-                            }
-                        }*/
-                        list.add(finalI + 1);
+                        if (list.size() > 3) {
+                            Toast.makeText(TrainSeatPlan.this, "4 seats can only be booked in one purchase", Toast.LENGTH_SHORT).show();
+                        } else {
+                            cardView.setCardBackgroundColor(Color.parseColor("#00d6a3"));
+                            totatCost += seatPrice;
+                            ++totalSeats;
+                            list.add(finalI + 1);
+                        }
                         // Toast.makeText(TrainSeatPlan.this, "You Selected Seat Number :" + (finalI + 1), Toast.LENGTH_SHORT).show();
 
                     } else {
@@ -183,5 +174,14 @@ progressDialog.show();*/
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -96,7 +96,6 @@ public class AddTrain extends AppCompatActivity {
                         time.requestFocus();
                         return;
                     } else {
-                        //bus number doesn't exists.
                         AddTrainclass addTrainclass1 = new AddTrainclass(timeloc, trainlocation, total);
                         databaseReference.child(total).setValue(addTrainclass1);
                         Toast.makeText(getApplicationContext(), "Train Added", Toast.LENGTH_SHORT).show();
