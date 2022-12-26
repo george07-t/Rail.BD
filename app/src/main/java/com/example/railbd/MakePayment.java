@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ public class MakePayment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_payment);
         t1 = findViewById(R.id.pay);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         final String total = getIntent().getStringExtra("TOTALCOSTI");
         final String seats = getIntent().getStringExtra("TOTALSEAT");
         final String togo = getIntent().getStringExtra("togo");
@@ -65,7 +68,6 @@ public class MakePayment extends AppCompatActivity {
                     alertBuilder.setTitle("Confirm before purchase");
                     alertBuilder.setMessage("Card number: " + cardForm.getCardNumber() + "\n" +
                             "Card expiry date: " + cardForm.getExpirationDateEditText().getText().toString() + "\n" +
-                            "Card CVV: " + cardForm.getCvv() + "\n" +
                             "Postal code: " + cardForm.getPostalCode() + "\n" +
                             "Phone number: " + cardForm.getMobileNumber() + "\nFare: " + total + " TK(BDT)");
                     String cardnumber = cardForm.getCardNumber();
@@ -129,5 +131,13 @@ public class MakePayment extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

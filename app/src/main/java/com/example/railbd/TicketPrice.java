@@ -17,7 +17,7 @@ public class TicketPrice extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         PDFView pdfView=findViewById(R.id.pdfView);
-        pdfView.fromAsset("cse19_info.PDF").load();
+        pdfView.fromAsset("TicketPrice.pdf").load();
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

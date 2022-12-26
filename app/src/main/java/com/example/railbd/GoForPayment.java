@@ -1,9 +1,11 @@
 package com.example.railbd;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -52,7 +54,7 @@ public class GoForPayment extends AppCompatActivity {
         a.setText(togo);
         b.setText(date + " (" + time + " BST)");
         c.setText("Coach :" + coach);
-        totalCost.setText("Payable : Rs." + total);
+        totalCost.setText("Payable: "+total+" Tk ( BDT )");
         totalSeat.setText("Seat Numbers : " + seatnum+"\n Number of seats:"+seats);
 
         buttonPay = (Button) findViewById(R.id.btnPay);
@@ -83,5 +85,13 @@ public class GoForPayment extends AppCompatActivity {
 //                startActivity(new Intent(getApplicationContext(), PayActivity.class));
             }
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

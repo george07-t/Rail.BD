@@ -57,6 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="10dp"
+            android:textColor="@color/white"
             android:background="@drawable/rounded_shape1" />
 
         <Button

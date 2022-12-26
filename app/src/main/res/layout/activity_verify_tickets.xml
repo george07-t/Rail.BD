@@ -17,9 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="20dp"
-            android:background="@color/white"
+            android:background="@drawable/rounded_shape2"
             android:hint="Ticket Number"
-            android:padding="5dp"
+            android:padding="10dp"
             android:textColorHint="@color/black"
             android:id="@+id/verifyticket"
             />

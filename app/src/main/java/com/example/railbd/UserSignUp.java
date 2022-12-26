@@ -91,31 +91,37 @@ public class UserSignUp extends AppCompatActivity {
         if (name.isEmpty()) {
             signupname.setError("Enter a Name");
             signupname.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         if (number.isEmpty()) {
             signupnumber.setError("Enter Phone Number");
             signupnumber.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         if (email.isEmpty()) {
             signupEmail.setError("Enter Email ");
             signupEmail.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             signupEmail.setError("Enter a Valid Email ");
             signupEmail.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         if (password.isEmpty()) {
             signupPassword.setError("Enter Password ");
             signupPassword.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         if (password.length() < 6) {
             signupPassword.setError("Password must have minimum 6 digits");
             signupPassword.requestFocus();
+            progressDialog.dismiss();
             return;
         }
 
@@ -162,5 +168,9 @@ public class UserSignUp extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver1);
     }
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(UserSignUp.this,MainActivity.class));
+        finish();
+    }
 }

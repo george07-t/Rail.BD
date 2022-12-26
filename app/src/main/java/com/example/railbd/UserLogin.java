@@ -93,21 +93,25 @@ public class UserLogin extends AppCompatActivity {
         if (email.isEmpty()) {
             loginEmail.setError("Enter Email ");
             loginEmail.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             loginEmail.setError("Enter a Valid Email ");
             loginEmail.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         if (password.isEmpty()) {
             loginPassword.setError("Enter Password ");
             loginPassword.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         if (password.length() < 6) {
             loginPassword.setError("Password must have minimum 6 digits");
             loginPassword.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -145,6 +149,11 @@ public class UserLogin extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver1);
+    }
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(UserLogin.this,MainActivity.class));
+        finish();
     }
 
 }
