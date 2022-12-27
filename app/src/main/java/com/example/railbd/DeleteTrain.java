@@ -73,9 +73,11 @@ public class DeleteTrain extends AppCompatActivity {
         if (timeloc.isEmpty()) {
             dtime.setError("Enter Time");
             dtime.requestFocus();
+            progressDialog.dismiss();
             return;
         }
         if (fromloc.equals(toloc)) {
+            progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), "Both Location cannot be same", Toast.LENGTH_SHORT).show();
         } else {
             databaseReference.orderByChild("total").equalTo(total).addListenerForSingleValueEvent(new ValueEventListener() {

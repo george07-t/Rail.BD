@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Intent intents = new Intent(Intent.ACTION_SEND);
                         intents.setType("text/plain");
                         String subject = "Rail.BD";
-                        String body = "Rail.BD Online ticket booking app. \n   com.example.rail.bd";
+                        String body = "https://drive.google.com/drive/u/0/folders/1KNuP217XIOJixc6bRryJncjvZMmjoxqP";
                         intents.putExtra(Intent.EXTRA_SUBJECT, subject);
                         intents.putExtra(Intent.EXTRA_TEXT, body);
                         startActivity(Intent.createChooser(intents, "Share With"));

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bridge"
+    android:background="@drawable/adminback"
     android:gravity="center"
     tools:context=".AddTrain">
 
@@ -59,6 +59,7 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:textColor="@color/white"
+            android:padding="10dp"
             android:background="@drawable/rounded_shape1" />
 
         <Button

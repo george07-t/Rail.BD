@@ -70,7 +70,8 @@ public class AdminPanelLogin extends AppCompatActivity {
 
         if(item.getItemId()==android.R.id.home)
         {
-            this.finish();
+            startActivity(new Intent(AdminPanelLogin.this,MainActivity.class));
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
