@@ -97,11 +97,9 @@ public class TrainSeatPlan extends AppCompatActivity {
                 strArray = new String[]{};
                 if (totalseatsget == null || totalseatsget.isEmpty()) {
                     totalseatsget = "0";
-                    //strArray[0]=totalseatsget;
                     bookedseat.setText(totalseatsget);
                 } else {
                    strArray = totalseatsget.split(",");
-                    //String booked = totalseatsget.substring(5);
                     bookedseat.setText(totalseatsget.substring(1));
                 }
 
@@ -116,7 +114,6 @@ public class TrainSeatPlan extends AppCompatActivity {
                     }catch (Exception ignored){}
                 }
 
-                System.out.println(Arrays.asList(strArray));
 
 
                 if (set) {
@@ -176,9 +173,6 @@ public class TrainSeatPlan extends AppCompatActivity {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                        //Change background color
-                        //else {
                             int j = 0;
                             boolean booked = false;
                             if (strArray != null) {
@@ -223,19 +217,9 @@ public class TrainSeatPlan extends AppCompatActivity {
                                             idx++;
                                         }
                                     }
-                                    // Toast.makeText(TrainSeatPlan.this, "You Unselected Seat Number :" + (finalI + 1), Toast.LENGTH_SHORT).show();
                                 }
-                               // bookedseat.setText(strArray[0]);
-                                //if (step) {
 
-                                //} else {
-                                  //  Toast.makeText(TrainSeatPlan.this, "Seat is booked", Toast.LENGTH_SHORT).show();
-                                //}
                             }
-
-
-                        //}
-                        // Toast.makeText(TrainSeatPlan.this, "You Selected Seat Number :" + (finalI + 1), Toast.LENGTH_SHORT).show();
 
                     totalPrice.setText("" + totatCost + "0");
                     totalBookedSeats.setText("" + totalSeats);
