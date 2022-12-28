@@ -3,9 +3,15 @@ package com.example.railbd;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
@@ -60,6 +66,11 @@ public class MakePayment extends AppCompatActivity {
                 .actionLabel("Purchase")
                 .setup(MakePayment.this);
         cardForm.getCvvEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel=new NotificationChannel("My Notification","My Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manage=getSystemService(NotificationManager.class);
+            manage.createNotificationChannel(notificationChannel);
+        }
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +115,13 @@ public class MakePayment extends AppCompatActivity {
                                             }
                                         }
                                     });
+                            NotificationCompat.Builder builder=new NotificationCompat.Builder(MakePayment.this,"My Notification");
+                            builder.setContentTitle("Rail.BD");
+                            builder.setContentText("Ticket Number= "+ticketnumber+"\nLocation= "+togo+"\nDate & Time= "+date+"-"+time);
+                            builder.setSmallIcon(R.drawable.ic_launcher_background);
+                            builder.setAutoCancel(true);
+                            NotificationManagerCompat managerCompat=NotificationManagerCompat.from(MakePayment.this);
+                            managerCompat.notify(1,builder.build());
 
                         }
                     });
