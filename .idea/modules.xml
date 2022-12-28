@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Rail.BD.iml" filepath="$PROJECT_DIR$/.idea/modules/Rail.BD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Rail.BD.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Rail.BD.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Rail.BD.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Rail.BD.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Rail.BD.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Rail.BD.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Rail.BD.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Rail.BD.app.unitTest.iml" />
+    </modules>
+  </component>
+</project>
